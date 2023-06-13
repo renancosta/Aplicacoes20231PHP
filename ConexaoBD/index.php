@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
+Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to edit this template
 -->
 <html>
     <head>
@@ -10,28 +10,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     </head>
     <body>
         <form method="post">
-            <input type="text" name="nome"><br>
-            <input type="email" name="email"><br>
-            <input type="password" name="senha"><br>
-            <input type="text" name="id"><br>
-            <input type="submit" value="Enviar" name="enviar">
-            <input type="submit" value="Excluir" name="excluir">
-            <input type="submit" value="Alterar" name="alterar">
+            Login <input type="text" name="login">
+            Senha <input type="password" name="senha">
+            <input type="submit">
         </form>
         <?php
-           include 'UsuarioDAO.php';
-           $usuario = new UsuarioDAO();
-           if($_SERVER["REQUEST_METHOD"]=="POST"){
-            $nome = $_POST['nome'];
-            $email = $_POST['email'];
-            $senha = $_POST['senha'];
-            $id = $_POST['id'];
-            
-           // $usuario->incluir($nome, $email, $senha);
-           // $usuario->excluir($id);
-            
-           }
-           $usuario->buscar();
+            include 'UsuarioDAO.php';
+            session_start();
+            if($_SERVER["REQUEST_METHOD"]=="POST"){
+                $login = $_POST['login'];
+                $senha = $_POST['senha'];
+                $usuario = new UsuarioDAO();
+                if($id_usuario = $usuario->logar($login, $senha)){
+                    $_SESSION['usuario'] = $id_usuario;
+                    header('Location: cadastrarUsuario.php');
+                } else {
+                    echo 'Usuário ou senha inválidos';
+                }
+                
+            }
         ?>
     </body>
 </html>

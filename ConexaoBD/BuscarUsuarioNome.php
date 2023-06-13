@@ -15,11 +15,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         </form>
         <?php
            include 'UsuarioDAO.php';
-    
+           session_start();
+           if(empty($_SESSION['usuario'])){
+               header('Location: index.php');
+           }
            if($_SERVER["REQUEST_METHOD"]=="POST"){
             $usuario = new UsuarioDAO();
             $nome = $_POST['nome'];
             $usuario->buscarNome($nome);
+            $usuario->buscarDisciplina($_SESSION['usuario']);
            }
            
         ?>
